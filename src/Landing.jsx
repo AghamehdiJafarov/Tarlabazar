@@ -2,10 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import {
   Sprout, ArrowRight, Store, PackageCheck, Landmark, ShieldCheck,
-  Ban, Scale, FileCheck, Sun, HandCoins, Leaf, Users,
+  Ban, Scale, FileCheck, Sun, HandCoins, Leaf, Users, Play, Download,
 } from "lucide-react";
 import { useLang, t } from "./lang.jsx";
 import { C, StyleTag, Header, useReveal } from "./ui.jsx";
+
+// ↓ ВСТАВЬ СЮДА ID своего YouTube-ролика (часть после watch?v= или youtu.be/).
+// Пример: из https://www.youtube.com/watch?v=dQw4w9WgXcQ  →  YT_ID = "dQw4w9WgXcQ"
+// Пока стоит REPLACE — на сайте показывается аккуратная заглушка вместо ролика.
+const YT_ID = "REPLACE_WITH_YOUTUBE_ID";
+
+// Имя файла презентации. Положи PDF с этим именем в папку public/ — кнопка его скачает.
+const DECK_FILE = "/TarlaBazar.pdf";
 
 const HERO_CSS = `
 @keyframes tbGrad { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
@@ -127,6 +135,10 @@ export default function Landing() {
                     style={{ border: `1px solid ${C.EARTH}`, color: C.EARTH }}>
                 <Sprout size={16} /> {T("hero_cta_sell")}
               </Link>
+              <a href="#promo" className="tb-btn inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold"
+                 style={{ color: C.MUTED }}>
+                <Play size={15} /> {T("vid_watch")}
+              </a>
             </div>
           </div>
           <div className="flex justify-center md:justify-end reveal">
@@ -175,7 +187,38 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ПОЧЕМУ ХАЛЯЛЬ */}
+      {/* ПРОМО-ВИДЕО */}
+      <section id="promo" className="mx-auto max-w-4xl px-5 py-20">
+        <div className="reveal mb-10 text-center">
+          <div className="tb-eyebrow mb-3" style={{ color: C.RIPE }}>{T("vid_eyebrow")}</div>
+          <h2 className="tb-display font-extrabold mb-3" style={{ fontSize: "clamp(1.6rem,3.4vw,2.4rem)", color: C.INK }}>{T("vid_h")}</h2>
+          <p style={{ color: C.MUTED }}>{T("vid_p")}</p>
+        </div>
+        <div className="reveal rounded-3xl overflow-hidden" style={{ border: `1px solid ${C.LINE}`, boxShadow: "0 24px 60px rgba(61,80,40,0.16)" }}>
+          <div style={{ position: "relative", paddingTop: "56.25%", background: C.PANEL }}>
+            {YT_ID === "REPLACE_WITH_YOUTUBE_ID" ? (
+              <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column",
+                            alignItems: "center", justifyContent: "center", gap: 12, textAlign: "center", padding: 24 }}>
+                <div className="grid place-items-center rounded-full" style={{ width: 64, height: 64, background: `${C.RIPE}22`, border: `1px solid ${C.RIPE}66` }}>
+                  <Play size={30} color={C.RIPE} />
+                </div>
+                <div className="tb-display font-semibold" style={{ color: C.INK }}>{T("vid_placeholder_h")}</div>
+                <div className="text-sm" style={{ color: C.MUTED, maxWidth: 380 }}>{T("vid_placeholder_p")}</div>
+              </div>
+            ) : (
+              <iframe
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
+                src={"https://www.youtube-nocookie.com/embed/" + YT_ID}
+                title="TarlaBazar promo"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* КАК ЗАЩИЩЕНА СДЕЛКА */}
       <section id="halal" className="mx-auto max-w-6xl px-5 py-20">
         <Eyebrow color={C.LEAF_D}>{T("halal_eyebrow")}</Eyebrow>
         <h2 className="tb-display mt-4 text-3xl md:text-[34px] font-extrabold leading-tight reveal" style={{ maxWidth: 680, color: C.INK }}>
@@ -209,6 +252,29 @@ export default function Landing() {
           <Leaf size={15} color={C.LEAF} className="inline mr-2 -mt-0.5" />
           {T("halal_note")}
         </p>
+      </section>
+
+      {/* ПРЕЗЕНТАЦИЯ */}
+      <section className="border-y" style={{ borderColor: C.LINE, background: C.BG_ALT }}>
+        <div className="mx-auto max-w-4xl px-5 py-16">
+          <div className="tb-card reveal p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+            <div className="flex items-start gap-4">
+              <div className="grid place-items-center rounded-xl shrink-0" style={{ width: 48, height: 48, background: `${C.EARTH}1c`, border: `1px solid ${C.EARTH}55` }}>
+                <FileCheck size={24} color={C.EARTH} />
+              </div>
+              <div>
+                <div className="tb-eyebrow mb-2" style={{ color: C.EARTH }}>{T("deck_eyebrow")}</div>
+                <h2 className="tb-display font-bold text-xl mb-1.5" style={{ color: C.INK }}>{T("deck_h")}</h2>
+                <p className="text-sm" style={{ color: "#575c46" }}>{T("deck_p")}</p>
+              </div>
+            </div>
+            <a href={DECK_FILE} download
+               className="tb-btn inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-bold shrink-0"
+               style={{ background: C.EARTH, color: "#fff", boxShadow: "0 10px 26px rgba(168,118,62,0.3)" }}>
+              <Download size={16} /> {T("deck_btn")}
+            </a>
+          </div>
+        </div>
       </section>
 
       {/* CTA */}

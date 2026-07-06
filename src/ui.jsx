@@ -1,7 +1,10 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Sprout, Globe, Menu } from "lucide-react";
+import { Sprout, Globe, Menu, Download } from "lucide-react";
 import { useLang, t } from "./lang.jsx";
+
+// Имя файла презентации — то же, что в Landing.jsx. PDF кладётся в public/.
+const DECK_FILE = "/TarlaBazar.pdf";
 
 /* Природная агро-палитра — та же, что в AgroLens, чтобы два сайта читались как система. */
 export const C = {
@@ -94,11 +97,17 @@ export function Header() {
               {l.label}
             </Link>
           ))}
+          <Link to="/#promo" className="transition font-medium" style={{ color: C.MUTED }}>{T("vid_eyebrow")}</Link>
           <Link to="/#halal" className="transition font-medium" style={{ color: C.MUTED }}>{T("nav_halal")}</Link>
         </nav>
 
         <div className="flex items-center gap-3">
           <LangSwitch />
+          <a href={DECK_FILE} download
+             className="tb-btn hidden lg:inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold"
+             style={{ border: `1px solid ${C.LINE}`, color: C.INK }} title={T("deck_nav")}>
+            <Download size={15} /> <span className="hidden xl:inline">{T("deck_nav")}</span>
+          </a>
           <Link to="/new" className="tb-btn hidden sm:inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold"
                 style={{ background: C.LEAF, color: "#fff" }}>
             {T("nav_new")}
